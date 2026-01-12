@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lachlan Bassi | ML Portfolio</title>
+  <meta name="description" content="Machine Learning / Data Science projects: GenAI agents, computer vision, and applied analytics." />
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1620;
+      --text:#e7eef7;
+      --muted:#a8b3c2;
+      --ring:rgba(99, 179, 237, .45);
+      --overlay:rgba(0,0,0,.42);
+      --overlay-strong:rgba(0,0,0,.58);
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, #0f1b2a 0%, var(--bg) 55%) fixed;
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 46px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .name{
+      line-height:1.1;
+    }
+    .name h1{
+      margin:0;
+      font-size: 28px;
+      letter-spacing:.2px;
+    }
+    .name p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 14px;
+    }
+
+    .links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .links a{
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .links a:hover{ border-color: rgba(255,255,255,.25); }
+
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    /* Card base */
+    .card{
+      position:relative;
+      display:block;
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: var(--card);
+      min-height: 170px;
+      text-decoration:none;
+      color:inherit;
+      border: 1px solid rgba(255,255,255,.10);
+      transform: translateY(0);
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      outline: none;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    }
+    .card:focus-visible{
+      box-shadow: 0 0 0 4px var(--ring), 0 10px 24px rgba(0,0,0,.35);
+    }
+
+    .card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      position:absolute;
+      inset:0;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, var(--overlay-strong) 70%);
+    }
+
+    .content{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:16px 16px 14px;
+      gap:6px;
+    }
+
+    .title{
+      font-size:18px;
+      font-weight:750;
+      margin:0;
+      text-shadow: 0 2px 10px rgba(0,0,0,.45);
+    }
+    .subtitle{
+      margin:0;
+      font-size: 13px;
+      color: rgba(231,238,247,.88);
+      text-shadow: 0 2px 10px rgba(0,0,0,.45);
+    }
+    .tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .tag{
+      font-size: 11px;
+      color: rgba(231,238,247,.92);
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.22);
+      padding: 4px 8px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    .badge{
+      position:absolute;
+      top:12px;
+      right:12px;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.20);
+    }
+
+    /* Layout spans (desktop) */
+    .span-6{ grid-column: span 6; }
+    .span-12{ grid-column: span 12; }
+    .span-4{ grid-column: span 4; }
+
+    /* Make the big top row tiles a bit taller */
+    .hero{ min-height: 360px; }
+    .wide{ min-height: 180px; }
+
+    /* Responsive */
+    @media (max-width: 780px){
+      header{ align-items:flex-start; }
+      .links{ justify-content:flex-start; }
+      .span-6, .span-4, .span-12{ grid-column: span 12; }
+      .hero{ min-height: 210px; }
+    }
+
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="name">
+        <h1>Lachlan Bassi</h1>
+        <p>Machine Learning Engineer / Data Scientist</p>
+      </div>
+      <div class="links">
+        <a href="https://github.com/LKBEAST" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/lachlan-bassi-587b1a246/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Projects">
+      <!-- Top row -->
+      <a class="card hero span-6" href="projects/dubbel.html">
+        <img src="assets/dubbel.jpg" alt="Dubbel runners" />
+        <div class="overlay"></div>
+        <div class="content">
+          <p class="title">Agentic AI Chatbots for Dubbel</p>
+          <p class="subtitle">Production client • LLM agents • RAG • Guardrails</p>
+          <div class="tags">
+            <span class="tag">Agents</span><span class="tag">RAG</span><span class="tag">Human-in-loop</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card hero span-6" href="projects/basketball.html">
+        <img src="assets/basketball.jpg" alt="Basketball player tracking" />
+        <div class="overlay"></div>
+        <div class="badge">Work in progress</div>
+        <div class="content">
+          <p class="title">Computer Vision: Player Tracking & Analytics</p>
+          <p class="subtitle">Detection • Tracking • Homography • AWS pipeline</p>
+          <div class="tags">
+            <span class="tag">CV</span><span class="tag">Homography</span><span class="tag">AWS</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Middle row -->
+      <a class="card wide span-12" href="https://gamespeakai.github.io/HomePage/" target="_blank" rel="noopener">
+        <img src="assets/game-commentary.jpg" alt="Generative video game commentary" />
+        <div class="overlay"></div>
+        <div class="content">
+          <p class="title">Generative AI Video Game Commentary</p>
+          <p class="subtitle">Real-time listening • Tooling • TTS • Gameplay context</p>
+        </div>
+      </a>
+
+      <a class="card wide span-12" href="https://github.com/LKBEAST/My-Projects/blob/7bf72cf8899d4218d9ec682cd64dc70252431a9b/Honours/ImplementingObjectDetectionintoMedicalReportGenerationtoImproveAccuracy.pdf" target="_blank" rel="noopener">
+        <img src="assets/thesis.jpg" alt="Thesis cover image" />
+        <div class="overlay"></div>
+        <div class="content">
+          <p class="title">Thesis</p>
+          <p class="subtitle">Object detection for medical report generation</p>
+        </div>
+      </a>
+
+      <a class="card wide span-12" href="https://github.com/LKBEAST/My-Projects" target="_blank" rel="noopener">
+        <img src="assets/university.jpg" alt="University projects" />
+        <div class="overlay"></div>
+        <div class="content">
+          <p class="title">University Projects</p>
+          <p class="subtitle">Deep learning • Statistics • Applied ML</p>
+        </div>
+      </a>
+    </section>
+
+    <footer>
+      Tip: replace image paths in <code>assets/</code> and update <code>href</code> links. GitHub Pages will serve this automatically.
+    </footer>
+  </div>
+</body>
+</html>
