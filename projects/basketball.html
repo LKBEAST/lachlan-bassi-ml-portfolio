@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NBA Project Update | Lachlan Bassi</title>
+  <meta name="description" content="NBA computer vision pipeline: player tracking, team ID, ball tracking, homography, and cloud GPU processing." />
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1620;
+      --text:#e7eef7;
+      --muted:#a8b3c2;
+      --ring:rgba(99, 179, 237, .45);
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, #0f1b2a 0%, var(--bg) 55%) fixed;
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 46px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .name{ line-height:1.1; }
+    .name h1{
+      margin:0;
+      font-size: 28px;
+      letter-spacing:.2px;
+    }
+    .name p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 14px;
+    }
+
+    .links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .links a{
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .links a:hover{ border-color: rgba(255,255,255,.25); }
+
+    .card{
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+
+    .section{
+      padding: 18px 16px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .section:first-child{ border-top:none; }
+
+    .kicker{
+      margin:0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .h2{
+      margin:0 0 10px;
+      font-size:18px;
+      font-weight:750;
+      letter-spacing:.2px;
+    }
+
+    .p{
+      margin:0;
+      color: rgba(231,238,247,.92);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .bullets{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(231,238,247,.92);
+      font-size:14px;
+      line-height:1.6;
+    }
+    .bullets li{ margin: 6px 0; }
+    .muted{ color: var(--muted); }
+
+    .chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .chip{
+      font-size: 11px;
+      color: rgba(231,238,247,.92);
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.22);
+      padding: 5px 9px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    .videoWrap{
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+    }
+    .videoWrap iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 12px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .btn:hover{ border-color: rgba(255,255,255,.25); }
+
+    .twoCol{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px){
+      .twoCol{ grid-template-columns: 1.2fr .8fr; }
+    }
+
+    .miniCard{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: rgba(255,255,255,.02);
+    }
+    .miniTitle{
+      margin:0 0 6px;
+      font-size: 14px;
+      font-weight: 720;
+    }
+    .miniText{
+      margin:0;
+      color: rgba(231,238,247,.90);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="name">
+        <h1>NBA CV Pipeline — Progress Update</h1>
+        <p>Player tracking • Team ID • Ball tracking • Homography • Cloud GPU processing</p>
+      </div>
+
+      <div class="links">
+        <a href="../index.html">← Back</a>
+        <a href="https://youtu.be/SFbXelfyy1c" target="_blank" rel="noopener">Open video</a>
+        <a href="https://github.com/LKBEAST/NBA-Player-Tracker" target="_blank" rel="noopener">Repo</a>
+        <a href="https://github.com/LKBEAST" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/lachlan-bassi-587b1a246/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="section">
+        <p class="kicker">Current state (≈ 15 hours)</p>
+        <p class="h2">Proof-of-concept is working end-to-end</p>
+        <p class="p">
+          This is an early prototype built quickly to validate feasibility. The models still need improvement,
+          but the system is already producing usable outputs for a proof of concept and guiding the next iteration.
+        </p>
+
+        <div class="chips" aria-label="Capabilities">
+          <span class="chip">Player tracking</span>
+          <span class="chip">Team identification</span>
+          <span class="chip">Ball tracking</span>
+          <span class="chip">Homography → bird’s-eye view</span>
+          <span class="chip">Cloud GPU processing</span>
+        </div>
+
+        <div class="row" aria-label="Primary links">
+          <a class="btn" href="https://github.com/LKBEAST/NBA-Player-Tracker" target="_blank" rel="noopener">
+            View repo
+          </a>
+          <a class="btn" href="https://youtu.be/SFbXelfyy1c" target="_blank" rel="noopener">
+            Watch demo
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <p class="kicker">Demo</p>
+        <p class="h2">Video walkthrough</p>
+
+        <div class="videoWrap" aria-label="YouTube video embed">
+          <iframe
+            src="https://www.youtube.com/embed/SFbXelfyy1c"
+            title="NBA CV Pipeline - Current Progress"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <div class="row">
+          <a class="btn" href="https://youtu.be/SFbXelfyy1c" target="_blank" rel="noopener">Watch on YouTube</a>
+          <a class="btn" href="https://github.com/LKBEAST/NBA-Player-Tracker" target="_blank" rel="noopener">Open repo</a>
+          <a class="btn" href="../index.html">Back to portfolio</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="twoCol">
+          <div>
+            <p class="kicker">What’s working</p>
+            <p class="h2">Core models (needs improvement, but usable)</p>
+            <ul class="bullets">
+              <li><strong>Player tracking:</strong> detects and tracks players across frames (prototype quality).</li>
+              <li><strong>Team identification:</strong> assigns team labels (currently fragile, improving next).</li>
+              <li><strong>Ball tracking:</strong> detects the ball and attempts to maintain track continuity.</li>
+              <li><strong>Homography:</strong> maps broadcast view → <em>bird’s-eye</em> court coordinates for analytics.</li>
+            </ul>
+            <p class="p muted" style="margin-top:10px;">
+              The goal right now is “good enough” outputs for a credible demo, then iterate on accuracy + robustness.
+            </p>
+          </div>
+
+          <div class="miniCard">
+            <p class="miniTitle">Why this matters</p>
+            <p class="miniText">
+              Once you have reliable court coordinates for players + ball, you can unlock:
+              shot quality estimates, spacing metrics, play detection, transition speed, matchup tracking,
+              and more — without manual annotation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <p class="kicker">In progress</p>
+        <p class="h2">Automated pipeline (record → crop → upload → GPU → outputs)</p>
+        <p class="p">
+          I’m currently building a pipeline that automatically records and crops game footage, uploads clips to the cloud,
+          and runs GPU inference to generate player + ball tracks and transformed bird’s-eye coordinates.
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Local:</strong> record game footage → crop/segment into manageable clips → upload.</li>
+          <li><strong>Cloud:</strong> GPU worker processes clips → runs detection/tracking → homography transform.</li>
+          <li><strong>Outputs:</strong> annotated video + structured tracking data (for analytics + downstream models).</li>
+        </ul>
+
+        <div class="row" aria-label="Repo CTA">
+          <a class="btn" href="https://github.com/LKBEAST/NBA-Player-Tracker" target="_blank" rel="noopener">
+            Browse code & pipeline
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <p class="kicker">Next steps</p>
+        <p class="h2">What I’m improving next</p>
+        <ul class="bullets">
+          <li>Increase robustness: occlusions, camera cuts, fast motion, scoreboard overlays.</li>
+          <li>Improve team ID reliability (uniform colour drift, lighting, crowd colours).</li>
+          <li>Better ball tracking continuity (missed detections + re-identification).</li>
+          <li>More stable homography across zoom/pan, and validation against court landmarks.</li>
+          <li>Pipeline hardening: retries, batch processing, metrics, and cost-aware scheduling.</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Lachlan Bassi
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
