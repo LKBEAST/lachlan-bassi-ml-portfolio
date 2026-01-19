@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dubbel Agents | Lachlan Bassi</title>
+  <meta name="description" content="Agentic AI Chatbots for Dubbel — video walkthrough + slides." />
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1620;
+      --text:#e7eef7;
+      --muted:#a8b3c2;
+      --ring:rgba(99, 179, 237, .45);
+      --overlay:rgba(0,0,0,.42);
+      --overlay-strong:rgba(0,0,0,.58);
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, #0f1b2a 0%, var(--bg) 55%) fixed;
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 46px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .name{ line-height:1.1; }
+    .name h1{
+      margin:0;
+      font-size: 28px;
+      letter-spacing:.2px;
+    }
+    .name p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 14px;
+    }
+
+    .links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .links a{
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .links a:hover{ border-color: rgba(255,255,255,.25); }
+
+    .card{
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+
+    .section{
+      margin-top: 14px;
+      padding: 16px;
+    }
+
+    .kicker{
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 10px;
+    }
+
+    .h2{
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: .2px;
+    }
+
+    .p{
+      margin: 0;
+      color: rgba(231,238,247,.9);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .videoWrap{
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+    }
+    .videoWrap iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    .slidesGrid{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top: 12px;
+    }
+
+    .slide{
+      grid-column: span 12;
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.10);
+      transform: translateY(0);
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      outline: none;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .slide:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    }
+
+    .slide:focus-visible{
+      box-shadow: 0 0 0 4px var(--ring), 0 10px 24px rgba(0,0,0,.35);
+    }
+
+    .slide img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    .slideLabel{
+      position:absolute;
+      top:12px;
+      left:12px;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.20);
+      backdrop-filter: blur(4px);
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 12px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .btn:hover{ border-color: rgba(255,255,255,.25); }
+
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (min-width: 860px){
+      .slide{ grid-column: span 6; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="name">
+        <h1>Agentic AI Chatbots for Dubbel</h1>
+        <p>Video walkthrough + slide deck (JPEGs)</p>
+      </div>
+
+      <div class="links">
+        <a href="../index.html">← Back</a>
+        <a href="https://youtu.be/ESfiB2YAZzU" target="_blank" rel="noopener">Open video</a>
+        <a href="https://github.com/LKBEAST" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/lachlan-bassi-587b1a246/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="section">
+        <p class="kicker">Walkthrough</p>
+        <p class="h2">Demo video</p>
+
+        <div class="videoWrap" aria-label="YouTube video embed">
+          <iframe
+            src="https://www.youtube.com/embed/ESfiB2YAZzU"
+            title="Scaling Running Coaching with Agentic AI - Walkthrough"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <div class="row" aria-label="Video links">
+          <a class="btn" href="https://youtu.be/ESfiB2YAZzU" target="_blank" rel="noopener">Watch on YouTube</a>
+          <a class="btn" href="../index.html">Back to portfolio</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <p class="kicker">Slides</p>
+        <p class="h2">Slide deck</p>
+        <p class="p">Click any slide to open full-size in a new tab.</p>
+
+        <div class="slidesGrid" aria-label="Slides gallery">
+          <a class="slide"
+             href="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.001.jpeg"
+             target="_blank" rel="noopener">
+            <span class="slideLabel">Slide 1</span>
+            <img src="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.001.jpeg"
+                 alt="Scaling Running Coaching with Agentic AI - Slide 1" loading="lazy" />
+          </a>
+
+          <a class="slide"
+             href="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.002.jpeg"
+             target="_blank" rel="noopener">
+            <span class="slideLabel">Slide 2</span>
+            <img src="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.002.jpeg"
+                 alt="Scaling Running Coaching with Agentic AI - Slide 2" loading="lazy" />
+          </a>
+
+          <a class="slide"
+             href="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.003.jpeg"
+             target="_blank" rel="noopener">
+            <span class="slideLabel">Slide 3</span>
+            <img src="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.003.jpeg"
+                 alt="Scaling Running Coaching with Agentic AI - Slide 3" loading="lazy" />
+          </a>
+
+          <a class="slide"
+             href="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.004.jpeg"
+             target="_blank" rel="noopener">
+            <span class="slideLabel">Slide 4</span>
+            <img src="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.004.jpeg"
+                 alt="Scaling Running Coaching with Agentic AI - Slide 4" loading="lazy" />
+          </a>
+
+          <a class="slide"
+             href="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.005.jpeg"
+             target="_blank" rel="noopener">
+            <span class="slideLabel">Slide 5</span>
+            <img src="../assets/Scaling%20Running%20Coaching%20with%20Agentic%20AI.005.jpeg"
+                 alt="Scaling Running Coaching with Agentic AI - Slide 5" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Lachlan Bassi
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
